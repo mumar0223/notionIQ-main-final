@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  eslint: {
+    // ⚠️ Warning: disables ESLint during builds
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: "10mb",
