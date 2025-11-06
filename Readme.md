@@ -1,4 +1,4 @@
-# 🚀 **Live Project → [notion-iq-app-main.vercel.app](https://notion-iq-app-main.vercel.app)**
+# 🚀 **Live Project Link → [notion-iq-app-main.vercel.app](https://notion-iq-app-main.vercel.app)**
 
 ## 🎥 **Demo Video**
 
