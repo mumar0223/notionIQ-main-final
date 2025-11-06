@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -14,9 +14,12 @@ export async function PATCH(
     }
 
     const { name } = await req.json();
+    
+    // ✅ Await params before accessing properties
+    const { id } = await params;
 
     const folder = await prisma.folder.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!folder || folder.userId !== session.user.id) {
@@ -24,7 +27,7 @@ export async function PATCH(
     }
 
     const updated = await prisma.folder.update({
-      where: { id: params.id },
+      where: { id },
       data: { name },
     });
 
@@ -40,7 +43,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -48,8 +51,11 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // ✅ Await params before accessing properties
+    const { id } = await params;
+
     const folder = await prisma.folder.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!folder || folder.userId !== session.user.id) {
@@ -57,7 +63,7 @@ export async function DELETE(
     }
 
     await prisma.folder.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });
