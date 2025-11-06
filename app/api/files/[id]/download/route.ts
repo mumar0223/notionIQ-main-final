@@ -6,8 +6,8 @@ import { downloadFileFromUT } from "@/lib/uploadthing";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
-) {
+  context: { params: Record<string, string> }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
