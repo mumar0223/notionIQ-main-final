@@ -1,41 +1,21 @@
-import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { QuizInterface } from "@/components/quiz/QuizInterface";
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+export default async function QuizPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
+}) {
+  const session = await getServerSession(authOptions);
 
-    // ✅ Await params before accessing properties
-    const { id } = await params;
-
-    const quiz = await prisma.quiz.findUnique({
-      where: { id },
-      include: {
-        questions: {
-          orderBy: { order: "asc" },
-        },
-        folder: true,
-      },
-    });
-
-    if (!quiz || quiz.folder.userId !== session.user.id) {
-      return NextResponse.json({ error: "Quiz not found" }, { status: 404 });
-    }
-
-    return NextResponse.json(quiz);
-  } catch (error) {
-    console.error("Fetch quiz error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch quiz" },
-      { status: 500 }
-    );
+  if (!session) {
+    redirect("/login");
   }
+
+  // ✅ Await params before accessing
+  const { id } = await params;
+
+  return <QuizInterface quizId={id} userId={session.user.id} />;
 }
