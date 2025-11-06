@@ -1,3 +1,7 @@
+# 🚀 **Live Project → [notion-iq-app-main.vercel.app](https://notion-iq-app-main.vercel.app)**
+
+# 🎥 **Demo Video → [Watch on YouTube](https://www.youtube.com/watch?v=PbPiUWVktoA)**
+
 # 🧠 NotionIQ
 
 ### AI-Powered Smart Learning Platform
