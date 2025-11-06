@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  name          String?
+  image         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  conversations Conversation[]
+  folders       Folder[]
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  title     String    @default("New Chat")
+  type      String    @default("chat")
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folderId  String?
+  folder    Folder?   @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  fileId    String?
+  file      File?     @relation(fields: [fileId], references: [id], onDelete: SetNull)
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([folderId])
+}
+
+model Message {
+  id             String          @id @default(cuid())
+  role           String
+  content        String          @db.Text
+  conversationId String
+  conversation   Conversation    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  files          MessageFile[]
+  createdAt      DateTime        @default(now())
+
+  @@index([conversationId])
+}
+
+model MessageFile {
+  id        String   @id @default(cuid())
+  messageId String
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  fileId    String
+  file      File     @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([messageId, fileId])
+  @@index([messageId])
+  @@index([fileId])
+}
+
+model Folder {
+  id            String         @id @default(cuid())
+  name          String
+  parentId      String?
+  parent        Folder?        @relation("FolderHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children      Folder[]       @relation("FolderHierarchy")
+  userId        String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order         Int            @default(0)
+  files         File[]
+  quizzes       Quiz[]
+  conversations Conversation[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([parentId])
+}
+
+model File {
+  id            String         @id @default(cuid())
+  name          String
+  originalName  String
+  type          String
+  size          Int
+  pages         Int?
+  url           String
+  folderId      String?
+  folder        Folder?        @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  userId        String
+  conversations Conversation[]
+  quizzes       Quiz[]
+  messages      MessageFile[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([folderId])
+}
+
+model Quiz {
+  id        String         @id @default(cuid())
+  title     String
+  folderId  String
+  folder    Folder         @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  fileId    String?
+  file      File?          @relation(fields: [fileId], references: [id], onDelete: SetNull)
+  questions QuizQuestion[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([folderId])
+}
+
+model QuizQuestion {
+  id          String   @id @default(cuid())
+  quizId      String
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  question    String   @db.Text
+  type        String
+  options     String[]
+  correctAnswer String
+  explanation String   @db.Text
+  order       Int      @default(0)
+
+  @@index([quizId])
+}
