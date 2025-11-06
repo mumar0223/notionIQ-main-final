@@ -4,9 +4,9 @@ import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChatInterface } from "@/components/chat/ChatInterface";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 
-export default function ChatPage() {
+function ChatPageContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,9 +26,7 @@ export default function ChatPage() {
     );
   }
 
-  if (!session) {
-    return null;
-  }
+  if (!session) return null;
 
   if (summarizing) {
     return (
@@ -40,4 +38,18 @@ export default function ChatPage() {
   }
 
   return <ChatInterface userId={session.user.id} />;
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          <Loader2 className="animate-spin" size={32} />
+        </div>
+      }
+    >
+      <ChatPageContent />
+    </Suspense>
+  );
 }
