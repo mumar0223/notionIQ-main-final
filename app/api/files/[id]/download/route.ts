@@ -6,13 +6,17 @@ import { downloadFileFromUT } from "@/lib/uploadthing";
 
 export async function GET(
   req: Request,
-  context: { params: Record<string, string> }
+  context: { params: Promise<{ id: string }> }
 ): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    // ✅ Await params before accessing properties
+    const params = await context.params;
 
     const file = await prisma.file.findUnique({
       where: { id: params.id },
