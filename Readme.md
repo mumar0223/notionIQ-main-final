@@ -4,6 +4,9 @@
 
 [![Watch the video](https://img.youtube.com/vi/PbPiUWVktoA/maxresdefault.jpg)](https://www.youtube.com/watch?v=PbPiUWVktoA)
 
+## 📄 **Project Presentation (PDF)**
+[![View Presentation](https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg)](https://drive.google.com/file/d/1VdzDQXJRsufKitsVNlhWl-mN1Wx2yv1J/view?usp=drivesdk)
+
 # 🧠 NotionIQ
 
 ### AI-Powered Smart Learning Platform
