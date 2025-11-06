@@ -74,5 +74,5 @@ Follow these steps to set up **NotionIQ** locally:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/mumar0223/notionIQ.git
-cd notionIQ
+git clone https://github.com/mumar0223/notionIQ-main-final.git
+cd notionIQ-main-fina
