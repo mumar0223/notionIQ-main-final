@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
+    domains: ["voob5s3q1p.ufs.sh", "utfs.io"],
   },
   eslint: {
     // ⚠️ Warning: disables ESLint during builds
