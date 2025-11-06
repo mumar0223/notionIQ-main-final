@@ -15,7 +15,7 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // ✅ Await params before accessing properties
+    // ✅ Await params before accessing
     const params = await context.params;
 
     const file = await prisma.file.findUnique({
