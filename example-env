@@ -1,0 +1,14 @@
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+GEMINI_API_KEY=
+NEXTAUTH_SECRET=
+
+# Connect to Supabase via connection pooling
+DATABASE_URL=
+
+# Direct connection to the database (used for migrations)
+DIRECT_URL=
+
+UPLOADTHING_SECRET=
+UPLOADTHING_APP_ID=
+UPLOADTHING_TOKEN=
