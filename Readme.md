@@ -85,4 +85,4 @@ Follow these steps to set up **NotionIQ** locally:
 
 ```bash
 git clone https://github.com/mumar0223/notionIQ-main-final.git
-cd notionIQ-main-fina
+cd notionIQ-main-final
